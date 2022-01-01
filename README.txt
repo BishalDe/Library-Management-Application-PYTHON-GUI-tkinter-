@@ -1,1 +1,2 @@
-Hey there it is completely made by me on python.
+#Python GUI -LIBRARY APPLICATION
+This Project Is Under Development....!
