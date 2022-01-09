@@ -305,14 +305,138 @@ def quit():
 def mainwindow():
     main=Toplevel()
     main.title("Login")
-    main.geometry("690x750")
+    main.geometry("1600x900")
 
-    def quitt():
-        main.destroy()
+    def time():
+        today = date.today()
+        string = strftime('%H:%M:%S %p')
+        lbll.config(text=today)
+        lbl.config(text = string)
+        lbl.after(1000, time)
+
+    #images-----
+    timeimage=PhotoImage(file="images/time.png")
+    srchbtnimage=PhotoImage(file="images/search.png")
+    srchbtnimage1=PhotoImage(file="images/search1.png")
+    studentimage=PhotoImage(file="images/student.png")
+    parentimage=PhotoImage(file="images/parent.png")
+    bookidimage=PhotoImage(file="images/bookid.png")
+    authorimage=PhotoImage(file="images/author.png")
+    
 
 
-    Label(main,text="Work In Progress.!!",font=("Bahnschrift",20,"bold"),bg='white').pack()
-    Button(main,text="Exit",command=quitt).pack()
+    Frame(main,bg="silver",height=100,width=1800).pack()
+    lbl=Label(main, font = ('calibri', 20, 'bold'),background = 'silver',foreground = 'white')
+    lbll=Label(main, font = ('calibri', 30, 'bold'),background = 'silver',foreground = 'purple')
+    lbll.place(x=1350,y=28,anchor = 'center')
+    lbl.place(x=1350,y=68,anchor = 'center')
+    time()
+    bg=Label(main,image=timeimage,bg="silver").place(x=1190,y=22)
+    Frame(main,bg="yellow",height=1800,width=220).place(x=0,y=100)
+
+    Button(main,cursor="hand2",text="Add Book",bg="blue",fg="white" ,font = ('calibri',13, 'bold'),height=2,width=16,bd=1).place(x=55,y=120)
+
+    seeallbookbutton=Button(main,cursor="hand2",text="See All Books",bg="blue",fg="white" ,font = ('calibri',13, 'bold'),height=2,width=16,bd=1).place(x=55,y=190)
+
+    addstudentbutton=Button(main,cursor="hand2",text="Add Student",bg="blue",fg="white" ,font = ('calibri',13, 'bold'),height=2,width=16,bd=1).place(x=55,y=260)
+
+    seestudentbutton=Button(main,cursor="hand2",text="View All Students",bg="blue",fg="white" ,font = ('calibri',13, 'bold'),height=2,width=16,bd=1).place(x=55,y=330)
+
+    seeborrowedbooks=Button(main,cursor="hand2",text="All Borrowed Books",bg="blue",fg="white" ,font = ('calibri',13, 'bold'),height=2,width=16,bd=1).place(x=55,y=400)
+
+    allusers=Button(main,cursor="hand2",text="All Users",bg="blue",fg="white" ,font = ('calibri',13, 'bold'),height=2,width=16,bd=1).place(x=55,y=470)
+
+    onlineissue=Button(main,cursor="hand2",text="Online Issue request",bg="green",fg="white" ,font = ('calibri',13, 
+    'bold'),height=2,width=16,bd=1).place(x=55,y=540)
+
+    Button(main,cursor="hand2",text="CLOSE",bg="red",fg="white" ,font = ('calibri',13, 'bold'),command=quit,height=2,width=16,bd=1).place(x=55,y=750)
+
+    #issue frame contents ----------------------------------------
+    Frame(main,bg="orange",height=380,width=760).place(x=235,y=115)
+    Label(main,text="Issue Book :-",bg="orange",fg="blue",font=('Bookman Old Style',20,'bold')).place(x=239,y=118)
+    Label(main,text="Admission Number :",bg="orange",fg="black",font=("Agency FB",17,"bold")).place(x=279,y=160)
+    a=Entry(main,width=10,bg="yellow",font=(8),fg="blue",bd=2)
+    a.place(x=450,y=164)
+    a.insert(0,"5741")
+    search_btn=Button(main,image=srchbtnimage,bd=1,bg="orange",command=lambda:viewdetails(a.get()),cursor="hand2").place(x=570,y=150)
+
+    Label(main,text="Student Name :",bg="orange",fg="black",font=("Agency FB",17,"bold")).place(x=279,y=200)
+    Label(main,image=studentimage,bg="orange").place(x=239,y=200)
+    issue_studentname=Label(main,text="  ",bg="orange",fg="blue",font=("Franklin Gothic Medium Cond",20,'bold'))
+    issue_studentname.place(x=410,y=200)
+
+    Label(main,text="Class :",bg="orange",fg="black",font=("Agency FB",17,"bold")).place(x=279,y=235)
+    issue_class=Label(main,text="  ",bg="orange",fg="blue",font=("Franklin Gothic Medium Cond",20,'bold'))
+    issue_class.place(x=410,y=235)
+
+    Label(main,text="Father's Name :",bg="orange",fg="black",font=("Agency FB",17,"bold")).place(x=279,y=270)
+    Label(main,image=parentimage,bg="orange").place(x=239,y=270)
+    issue_fathername=Label(main,text="  ",bg="orange",fg="blue",font=("Franklin Gothic Medium Cond",20,'bold'))
+    issue_fathername.place(x=410,y=270)
+
+    Label(main,text="Book Id :",bg="orange",fg="black",font=("Agency FB",17,"bold")).place(x=279,y=325)
+    Label(main,image=bookidimage,bg="orange").place(x=239,y=325)
+    issue_bookid=Label(main,text="  ",bg="orange",fg="blue",font=("Franklin Gothic Medium Cond",20,'bold'))
+    issue_bookid.place(x=410,y=325)
+    b=Entry(main,width=10,bg="yellow",font=(8),fg="blue",bd=2)
+    b.place(x=360,y=330)
+    b.insert(0,"101")
+    book_search_btn=Button(main,image=srchbtnimage1,bd=1,bg="orange",command=lambda:viewbook(b.get()),cursor="hand2").place(x=480,y=315)
+
+    Label(main,text="Book Title :",bg="orange",fg="black",font=("Agency FB",17,"bold")).place(x=279,y=375)
+    issue_booktitle=Label(main,text="  ",bg="orange",fg="blue",font=("Franklin Gothic Medium Cond",20,'bold'))
+    issue_booktitle.place(x=410,y=375)
+
+    Label(main,text="Author's Name :",bg="orange",fg="black",font=("Agency FB",17,"bold")).place(x=279,y=410)
+    Label(main,image=authorimage,bg="orange").place(x=239,y=410)
+    issue_writter=Label(main,text="  ",bg="orange",fg="blue",font=("Franklin Gothic Medium Cond",20,'bold'))
+    issue_writter.place(x=410,y=410)
+
+    issue_btn=Button(main,text="Issue Book",bd=3,bg="blue",fg="white",font = ('calibri',13, 'bold'),command=lambda:issue(a.get(),b.get()),cursor="hand2",state=DISABLED)
+    issue_btn.place(x=800,y=450)
+
+    
+    #submitted frame content -------------------------------------
+    Frame(main,bg="chocolate",height=290,width=760).place(x=235,y=520)
+    Label(main,text="Submit Book :-",bg="chocolate",fg="blue",font=('Bookman Old Style',17,'bold')).place(x=239,y=523)
+
+    Label(main,text="Admission Number :",bg="chocolate",fg="black",font=("Agency FB",17,"bold")).place(x=279,y=570)
+    ab=Entry(main,width=10,bg="yellow",font=(8),fg="blue",bd=2)
+    ab.place(x=450,y=570)
+    ab.insert(0,"5741")
+
+    Label(main,text="Book Id :",bg="chocolate",fg="black",font=("Agency FB",17,"bold")).place(x=279,y=610)
+    ba=Entry(main,width=10,bg="yellow",font=(8),fg="blue",bd=2)
+    ba.place(x=450,y=610)
+    ba.insert(0,"100")
+    submit_btn=Button(main,text="Submit Book",bd=3,bg="blue",fg="white",font = ('calibri',13, 'bold'),command=lambda:submitbook(ab.get(),ba.get()),cursor="hand2")
+    submit_btn.place(x=800,y=750)
+
+
+
+    #display frame content ---------------------------------------
+    disframe=Frame(main,bg="grey",height=700,width=450)
+    disframe.place(x=1025,y=115)
+    Label(main,text="ISSUE RECORD",bg="grey",fg="white",font=('Consolas',20,'bold')).place(x=1150,y=118)
+    Label(main,text="------------------------------------",bg="grey",fg="white",font=('Consolas',15,'bold')).place(x=1050,y=150)
+    Label(main,text="Name :",bg="grey",fg="white",font=('Consolas',14,'bold')).place(x=1050,y=170)
+    view_name=Label(main,text="",bg="grey",fg="yellow",font=('Consolas',15,'bold'))
+    view_name.place(x=1130,y=172)
+
+
+
+    Label(main,text="Admission Number :",bg="grey",fg="white",font=('Consolas',14,'bold')).place(x=1050,y=200)
+    view_admission=Label(main,text="",bg="grey",fg="yellow",font=('Consolas',15,'bold'))
+    view_admission.place(x=1250,y=199)
+
+    
+    
+    Label(main,text="------------------------------------",bg="grey",fg="white",font=('Consolas',15,'bold')).place(x=1050,y=230)
+    Label(main,text="Book Id :",bg="grey",fg="white",font=('Consolas',14,'bold')).place(x=1031,y=250)
+    Label(main,text="Book Name:",bg="grey",fg="white",font=('Consolas',14,'bold')).place(x=1200,y=250)
+    Label(main,text="┃\n┃\n┃\n┃\n┃\n┃\n┃\n┃\n┃\n┃\n┃\n┃\n┃\n┃\n┃\n┃\n┃\n┃\n",bg="grey",fg="white",font=('Consolas',15,'bold')).place(x=1110,y=290)
+    Label(main,text="------------------------------------",bg="grey",fg="white",font=('Consolas',15,'bold')).place(x=1050,y=270)
+
 
     main.mainloop()
 
@@ -382,8 +506,10 @@ vv.place(x=150,y=305)
 usernamelable=Label(window,text="USERNAME:",font=("Bahnschrift",15,"bold"),bg='white')
 usernamelable.place(x=150,y=270)
 
+
 username=Entry(window,width=30,bg="silver",font=(8),fg="blue")
 username.place(x=190,y=305)
+username.insert(0,"bishalde")
 
 
 
@@ -396,6 +522,7 @@ passwordlable.place(x=150,y=370)
 
 password=Entry(window,width=30,bg="silver",font=(8),fg="blue")
 password.place(x=190,y=405)
+password.insert(0,"5741")
 
 '''login button'''
 loginbutton=Button(window,image=loginimage,cursor="hand2", command=lambda : login(str(username.get()),str(password.get())),bd=0)
