@@ -405,7 +405,8 @@ def mainwindow():
         deleteee()
         issuedetail(admissionnumber)
         if a > 0:
-            messagebox.showinfo("Submitted", "Successfully Submited",parent=main)
+            messagebox.showinfo(
+                "Submitted", "Successfully Submited", parent=main)
 
     def issuedetail(admissionnumber):
 
@@ -436,6 +437,147 @@ def mainwindow():
         elif count < 10:
             issue_btn["state"] = NORMAL
 
+    def issue(admissionnumber, bookid):
+
+        with open("resources/allstudentrecord.csv", 'r') as myfile:
+            csvw = csv.reader(myfile)
+            for i in csvw:
+                if str(i[0]) == str(admissionnumber):
+                    # admission number
+                    admissionnumberr = str(i[0])
+                    # name
+                    nameee = str(i[1])
+
+        with open("resources/books.csv", 'r', newline="") as myfile:
+            csvw = csv.reader(myfile)
+            for i in csvw:
+                if str(i[0]) == str(bookid):
+                    # bookid
+                    bookidd = i[0]
+                    # bookname
+                    booknameee = i[1]
+
+        mydb = myclient["LIBRARY"]
+        mytable = mydb["allissuedbooks"]
+        
+        details = {"admission_number": admissionnumber,
+                   "student_name": nameee,
+                   "book_id": bookidd,
+                   "book_name": booknameee,
+                   "date_of_issue": str(date.today())}
+
+        mydb = myclient["LIBRARY"]
+        mytable = mydb["allissuedbooks"]
+        mytable.insert_one(details)
+
+        issuedetail(admissionnumber)
+
+        messagebox.showinfo("Issued", "Book Has Been Issued", parent=main)
+
+    def addbook():
+        newbook = Toplevel()
+        newbook.geometry("700x800")
+        newbook.title("Add New Books")
+
+        def reset():
+            bookid.delete(0, END)
+            classs.delete(0, END)
+            category.delete(0, END)
+            bookname.delete(0, END)
+            authorname.delete(0, END)
+            date_of_publish.delete(0, END)
+            totalpage.delete(0, END)
+            comment.delete(0, END)
+
+        def addbook(bookid, classs, category, bookname, authorname, date_of_publish, totalpage, comment):
+            mydb = myclient["LIBRARY"]
+            mytable = mydb["allbooks"]
+            book = {"book_id": bookid, "class": classs, "category": category, "book_name": bookname,
+                    "author_name": authorname, "date_of_publish": date_of_publish, "total_pages": totalpage, "comment": comment}
+
+            mytable.insert_one(book)
+            messagebox.showinfo(
+                "Done", "Book Added Successfully.!", parent=newbook)
+            reset()
+
+        bgimage = PhotoImage(file="images/bg.png")
+        bg = Label(newbook, image=bgimage)
+        bg.pack()
+
+        a1 = Frame(newbook, height=700, width=590, bg="white")
+        a1.place(x=50, y=50)
+
+        introlabel = Label(newbook, text="ADD BOOK HERE", font=(
+            "Rockwell Extra Bold", 23, "bold"), bg='white', fg='blue')
+        introlabel.place(x=55, y=55)
+
+        # bookid section ------------------------------------------
+        bookidlable = Label(newbook, text="Book Id :", font=(
+            "Bahnschrift", 15, "bold"), bg='white')
+        bookidlable.place(x=55, y=110)
+        bookid = Entry(newbook, width=30, bg="yellow", font=(8), fg="blue")
+        bookid.place(x=290, y=117)
+
+        # class & category sector------------------------------------------
+        classslable = Label(newbook, text="Class :", font=(
+            "Bahnschrift", 15, "bold"), bg='white')
+        classslable.place(x=55, y=150)
+        classs = Entry(newbook, width=10, bg="yellow", font=(8), fg="blue")
+        classs.place(x=290, y=157)
+
+        categorylable = Label(newbook, text="Category :", font=(
+            "Bahnschrift", 15, "bold"), bg='white')
+        categorylable.place(x=420, y=151)
+        category = Entry(newbook, width=8, bg="yellow", font=(8), fg="blue")
+        category.place(x=530, y=157)
+
+        # bookname section ---------------------------------------------------------
+        booknamelable = Label(newbook, text="Book Name :", font=(
+            "Bahnschrift", 15, "bold"), bg='white')
+        booknamelable.place(x=55, y=190)
+        bookname = Entry(newbook, width=30, bg="yellow", font=(8), fg="blue")
+        bookname.place(x=290, y=197)
+
+        # author's name section-----------------------------------------------------------
+        authornamelable = Label(newbook, text="Author's Name :", font=(
+            "Bahnschrift", 15, "bold"), bg='white')
+        authornamelable.place(x=55, y=230)
+        authorname = Entry(newbook, width=30, bg="yellow", font=(8), fg="blue")
+        authorname.place(x=290, y=237)
+
+        # date of publish section-----------------------------------------------------------
+        date_of_publishlable = Label(newbook, text="Date Of Publish :", font=(
+            "Bahnschrift", 15, "bold"), bg='white')
+        date_of_publishlable.place(x=55, y=270)
+        date_of_publish = Entry(
+            newbook, width=30, bg="yellow", font=(8), fg="blue")
+        date_of_publish.place(x=290, y=277)
+
+        # total page section-----------------------------------------------------------
+        totalpagelable = Label(newbook, text="Total Pages :", font=(
+            "Bahnschrift", 15, "bold"), bg='white')
+        totalpagelable.place(x=55, y=310)
+        totalpage = Entry(newbook, width=30, bg="yellow", font=(8), fg="blue")
+        totalpage.place(x=290, y=317)
+
+        # Comment section---------------------------------------------------------------------
+        commentlable = Label(newbook, text="Additional Information :", font=(
+            "Bahnschrift", 15, "bold"), bg='white')
+        commentlable.place(x=55, y=350)
+        comment = Entry(newbook, width=30, bg="yellow", font=(8), fg="blue")
+        comment.place(x=290, y=357)
+
+        # buttons section-------------------------------------------------------------------------
+        addbutton = Button(newbook, text="ADD", command=lambda: addbook(bookid.get(), classs.get(), category.get(
+        ), bookname.get(), authorname.get(), date_of_publish.get(), totalpage.get(), comment.get()), cursor="hand2", bd=3)
+        addbutton.place(x=200, y=475)
+
+        resetbutton = Button(newbook, text="RESET",
+                             command=reset, cursor="hand2", bd=3)
+        resetbutton.place(x=365, y=472)
+
+        newbook.mainloop()
+
     # images-----
     timeimage = PhotoImage(file="images/time.png")
     srchbtnimage = PhotoImage(file="images/search.png")
@@ -456,7 +598,7 @@ def mainwindow():
     bg = Label(main, image=timeimage, bg="silver").place(x=1190, y=22)
     Frame(main, bg="yellow", height=1800, width=220).place(x=0, y=100)
 
-    Button(main, cursor="hand2", text="Add Book", bg="blue", fg="white", font=(
+    addbookbutton=Button(main, cursor="hand2", text="Add Book", bg="blue", fg="white", command=addbook, font=(
         'calibri', 13, 'bold'), height=2, width=16, bd=1).place(x=55, y=120)
 
     seeallbookbutton = Button(main, cursor="hand2", text="See All Books", bg="blue", fg="white", font=(
@@ -674,7 +816,7 @@ passwordlable = Label(window, text="PASSWORD:", font=(
     "Bahnschrift", 15, "bold"), bg='white')
 passwordlable.place(x=150, y=370)
 
-password = Entry(window, width=30, bg="silver", font=(8), fg="blue")
+password = Entry(window, width=30, bg="silver", font=(8), fg="blue", show="*")
 password.place(x=190, y=405)
 password.insert(0, "5741")
 
